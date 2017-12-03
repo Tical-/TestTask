@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@Html.Partial("SVG")
+
+@*<div id="svgObject">
+        <object type="image/svg+xml" data="@Url.Content("~/Content/Silo towers-10.svg")" width="100%">
+            Your browser does not support SVG
+        </object>
+    </div>*@
+
+@section scripts
+{
+    <script>
+        var SVG = (function () {
+            var interval;
+            function SVG() {
+
+            }
+            function getRandomArbitrary(min, max) {
+                return Math.round(Math.random() * (max - min) + min);
+            }
+            SVG.prototype.SetRandomizeInClient = function SetRandomize() {
+                interval = setInterval(function () {
+                    for (var i = 0; i < 8; i++) {
+                        change(i, getRandomArbitrary(0, 100));
+                    }
+                }, 1000);
+            }
+            SVG.prototype.off = function off() {
+                clearInterval(interval);
+            }
+            SVG.prototype.reset = function reset() {
+                for (var i = 0; i < 8; i++) {
+                    changeAll(0);
+                }
+            }
+            SVG.prototype.Get = function Get() {
+                interval = setInterval(function () {
+                    $.ajax({
+                        method: "POST",
+                        url: "/api/WebApi/Get",
+                    }).done(function (msg) {
+                        $(msg).each(function (index, element) {
+                            change(index, element.value, element.mass, element.minValue, element.maxValue, element.title);
+                        });
+                    });
+                }, 1000);
+            }
+            function change(silo, value, mass, minValue, maxValue, title) {
+                if (value > maxValue || value < minValue) {
+                    document.getElementsByClassName("st828")[silo].setAttribute("style", "stroke: red;");
+                } else {
+                    document.getElementsByClassName("st828")[silo].setAttribute("style", "stroke: green;");
+                }                
+                document.getElementsByClassName("textE")[silo].setAttribute("height", value * 4);
+                var value = Math.round(value * 100 / mass);
+                document.getElementsByClassName("st7 st1179 st1181")[silo + 1].childNodes[0].nodeValue = value + "%";
+                document.getElementsByClassName("st1188")[silo].setAttribute("height", value * 4);
+                document.getElementsByClassName("st1188")[silo].setAttribute("y", 228 + (400 - value * 4));
+            };
+            function changeAll(height) {
+                height = height * 4;
+                for (var silo = 0; silo < 8; silo++) {
+                    document.getElementsByClassName("st7 st1179 st1181")[silo + 1].childNodes[0].nodeValue = height / 4 + "%";
+                    document.getElementsByClassName("st1188")[silo].setAttribute("height", height);
+                    document.getElementsByClassName("st1188")[silo].setAttribute("y", 228 + (400 - height));
+                }
+            };
+            return SVG;
+        }());
+        var svg = new SVG();
+        window.svg = svg;
+        svg.reset();
+        svg.Get();
+    </script>
+}
