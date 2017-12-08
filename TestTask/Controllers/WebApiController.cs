@@ -9,6 +9,15 @@ namespace TestTask.Controllers
 {
     public class WebApiController : ApiController
     {
+        public class Emploe
+        {
+            public string FirstName { get; set; }
+            public string SecondName { get; set; }
+            public string LastName { get; set; }
+            public string Sex { get; set; }
+            public int PositionId { get; set; }
+            public int DepartmentId { get; set; }
+        }
         public class Indicator
         {
             public string id { get; set; }
@@ -18,6 +27,15 @@ namespace TestTask.Controllers
             public double maxValue { get; set; }
             public double mass { get; set; }
         }
+        [HttpPost]
+        public void Insert (Emploe emploe)
+        {
+            using (var db = new DBEntities())
+            {
+                db.Employers.Add(new Employers() { FirstName = emploe.FirstName, SecondName = emploe.SecondName, LastName = emploe.LastName, Sex = emploe.Sex == "Male", PositionId = emploe.PositionId, DepartmentId = emploe.DepartmentId });
+            }
+        }
+
         [HttpPost]
         public IEnumerable<Indicator> Get()
         {

@@ -1,17 +1,263 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    @*USE [master]
+    GO
+    /****** Object:  Database [DB]    Script Date: 08.12.2017 13:19:09 ******/
+    CREATE DATABASE [DB]
+     CONTAINMENT = NONE
+     ON  PRIMARY
+    ( NAME = N'DB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQL2014\MSSQL\DATA\DB.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+     LOG ON
+    ( NAME = N'DB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQL2014\MSSQL\DATA\DB_log.ldf' , SIZE = 2048KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+    GO
+    ALTER DATABASE [DB] SET COMPATIBILITY_LEVEL = 120
+    GO
+    IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+    begin
+    EXEC [DB].[dbo].[sp_fulltext_database] @action = 'enable'
+    end
+    GO
+    ALTER DATABASE [DB] SET ANSI_NULL_DEFAULT OFF
+    GO
+    ALTER DATABASE [DB] SET ANSI_NULLS OFF
+    GO
+    ALTER DATABASE [DB] SET ANSI_PADDING OFF
+    GO
+    ALTER DATABASE [DB] SET ANSI_WARNINGS OFF
+    GO
+    ALTER DATABASE [DB] SET ARITHABORT OFF
+    GO
+    ALTER DATABASE [DB] SET AUTO_CLOSE OFF
+    GO
+    ALTER DATABASE [DB] SET AUTO_SHRINK OFF
+    GO
+    ALTER DATABASE [DB] SET AUTO_UPDATE_STATISTICS ON
+    GO
+    ALTER DATABASE [DB] SET CURSOR_CLOSE_ON_COMMIT OFF
+    GO
+    ALTER DATABASE [DB] SET CURSOR_DEFAULT  GLOBAL
+    GO
+    ALTER DATABASE [DB] SET CONCAT_NULL_YIELDS_NULL OFF
+    GO
+    ALTER DATABASE [DB] SET NUMERIC_ROUNDABORT OFF
+    GO
+    ALTER DATABASE [DB] SET QUOTED_IDENTIFIER OFF
+    GO
+    ALTER DATABASE [DB] SET RECURSIVE_TRIGGERS OFF
+    GO
+    ALTER DATABASE [DB] SET  DISABLE_BROKER
+    GO
+    ALTER DATABASE [DB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF
+    GO
+    ALTER DATABASE [DB] SET DATE_CORRELATION_OPTIMIZATION OFF
+    GO
+    ALTER DATABASE [DB] SET TRUSTWORTHY OFF
+    GO
+    ALTER DATABASE [DB] SET ALLOW_SNAPSHOT_ISOLATION OFF
+    GO
+    ALTER DATABASE [DB] SET PARAMETERIZATION SIMPLE
+    GO
+    ALTER DATABASE [DB] SET READ_COMMITTED_SNAPSHOT OFF
+    GO
+    ALTER DATABASE [DB] SET HONOR_BROKER_PRIORITY OFF
+    GO
+    ALTER DATABASE [DB] SET RECOVERY SIMPLE
+    GO
+    ALTER DATABASE [DB] SET  MULTI_USER
+    GO
+    ALTER DATABASE [DB] SET PAGE_VERIFY CHECKSUM
+    GO
+    ALTER DATABASE [DB] SET DB_CHAINING OFF
+    GO
+    ALTER DATABASE [DB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF )
+    GO
+    ALTER DATABASE [DB] SET TARGET_RECOVERY_TIME = 0 SECONDS
+    GO
+    ALTER DATABASE [DB] SET DELAYED_DURABILITY = DISABLED
+    GO
+    USE [DB]
+    GO
+    /****** Object:  Table [dbo].[Departments]    Script Date: 08.12.2017 13:19:10 ******/
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
+    CREATE TABLE [dbo].[Departments](
+        [id] [int] IDENTITY(1,1) NOT NULL,
+        [Department] [nvarchar](50) NOT NULL,
+     CONSTRAINT [PK_Departments] PRIMARY KEY CLUSTERED
+    (
+        [id] ASC
+    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    ) ON [PRIMARY]
+
+    GO
+    /****** Object:  Table [dbo].[Employers]    Script Date: 08.12.2017 13:19:11 ******/
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
+    CREATE TABLE [dbo].[Employers](
+        [id] [int] IDENTITY(1,1) NOT NULL,
+        [FirstName] [nvarchar](50) NOT NULL,
+        [SecondName] [nvarchar](50) NOT NULL,
+        [LastName] [nvarchar](50) NOT NULL,
+        [Sex] [bit] NOT NULL,
+        [PositionId] [int] NOT NULL,
+        [DepartmentId] [int] NOT NULL,
+     CONSTRAINT [PK_Employers] PRIMARY KEY CLUSTERED
+    (
+        [id] ASC
+    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    ) ON [PRIMARY]
+
+    GO
+    /****** Object:  Table [dbo].[Positions]    Script Date: 08.12.2017 13:19:11 ******/
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
+    CREATE TABLE [dbo].[Positions](
+        [id] [int] IDENTITY(1,1) NOT NULL,
+        [Position] [nvarchar](50) NOT NULL,
+     CONSTRAINT [PK_Positions] PRIMARY KEY CLUSTERED
+    (
+        [id] ASC
+    )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    ) ON [PRIMARY]
+
+    GO
+    SET IDENTITY_INSERT [dbo].[Departments] ON
+
+    GO
+    INSERT [dbo].[Departments] ([id], [Department]) VALUES (1, N'Департамент управления персоналом')
+    GO
+    INSERT [dbo].[Departments] ([id], [Department]) VALUES (2, N'Департамент управления рисками')
+    GO
+    INSERT [dbo].[Departments] ([id], [Department]) VALUES (3, N'Департамент по делам несовершеннолетних')
+    GO
+    SET IDENTITY_INSERT [dbo].[Departments] OFF
+    GO
+    SET IDENTITY_INSERT [dbo].[Positions] ON
+
+    GO
+    INSERT [dbo].[Positions] ([id], [Position]) VALUES (1, N'Секретарь')
+    GO
+    INSERT [dbo].[Positions] ([id], [Position]) VALUES (2, N'Начальник')
+    GO
+    INSERT [dbo].[Positions] ([id], [Position]) VALUES (3, N'Администратор')
+    GO
+    INSERT [dbo].[Positions] ([id], [Position]) VALUES (4, N'Директор')
+    GO
+    SET IDENTITY_INSERT [dbo].[Positions] OFF
+    GO
+    ALTER TABLE [dbo].[Employers]  WITH CHECK ADD  CONSTRAINT [FK_Employers_Departments] FOREIGN KEY([DepartmentId])
+    REFERENCES [dbo].[Departments] ([id])
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    GO
+    ALTER TABLE [dbo].[Employers] CHECK CONSTRAINT [FK_Employers_Departments]
+    GO
+    ALTER TABLE [dbo].[Employers]  WITH CHECK ADD  CONSTRAINT [FK_Employers_Positions] FOREIGN KEY([PositionId])
+    REFERENCES [dbo].[Positions] ([id])
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    GO
+    ALTER TABLE [dbo].[Employers] CHECK CONSTRAINT [FK_Employers_Positions]
+    GO
+    USE [master]
+    GO
+    ALTER DATABASE [DB] SET  READ_WRITE
+    GO
+    *@
 }
+<script src="http://knockoutjs.com/downloads/knockout-3.4.2.js"></script>
+<div id="Emploes">
+    <h1>Создать пользователя</h1>
+
+    <table>
+        <tr>
+            <td>
+                [FirstName]
+            </td>
+            <td>
+                [SecondName]
+            </td>
+            <td>
+                [LastName]
+            </td>
+            <td>
+                [Sex]
+            </td>
+            <td>
+                [Position]
+            </td>
+            <td>
+                [Department]
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="FirstName" data-bind="value:AddItem.FirstName, valueUpdate : 'afterkeydown'" />
+            </td>
+            <td>
+                <input type="text" id="SecondName" data-bind="value:AddItem.SecondName, valueUpdate : 'afterkeydown'" />
+            </td>
+            <td>
+                <input type="text" id="LastName" data-bind="value:AddItem.LastName, valueUpdate : 'afterkeydown'" />
+            </td>
+            <td>
+                Муж <input type='radio' name='Sex' value='Male' checked="checked" data-bind="checked: AddItem.Sex"><br />
+                Жен <input type='radio' name='Sex' value='female' data-bind="checked: AddItem.Sex">
+            </td>
+            <td>
+                @Html.DropDownList("PositionId", (IEnumerable<SelectListItem>)ViewBag.Positions, new { data_bind = "value:AddItem.PositionId" })
+            </td>
+            <td>
+                @Html.DropDownList("DepartmentId", (IEnumerable<SelectListItem>)ViewBag.Departmentments, new { data_bind = "value:AddItem.DepartmentId" })
+            </td>
+            <td>
+                <input type="button" value="Вставить" data-bind="click:Insert.bind($data)" />
+            </td>
+        </tr>
+    </table>
+</div>
+<br /><br /><br /><br /><br />
+
+
+
 
 @Html.Partial("SVG")
 
-@*<div id="svgObject">
-        <object type="image/svg+xml" data="@Url.Content("~/Content/Silo towers-10.svg")" width="100%">
-            Your browser does not support SVG
-        </object>
-    </div>*@
-
 @section scripts
 {
+    <script>
+        var IndexViewModel = function () {
+            var self = this;
+            function Emploe(data) {
+                var self = this;
+                if (!data) {
+                    data = {};
+                }
+                self.FirstName = ko.observable(data.FirstName);
+                self.SecondName = ko.observable(data.SecondName);
+                self.LastName = ko.observable(data.LastName);
+                self.Sex = ko.observable(data.Sex);
+                self.PositionId = ko.observable(data.PositionId);
+                self.DepartmentId = ko.observable(data.DepartmentId);
+            }
+            self.AddItem = ko.observable();
+            self.AddItem = new Emploe();
+            self.Insert = function (data) {
+                debugger;
+                Application.POST("/Home/Save", ko.toJSON(ko.toJS(data.AddItem)));
+            }
+        }
+
+        ko.applyBindings(new IndexViewModel(), document.getElementById('Emploes'));
+
+    </script>
     <script>
         var SVG = (function () {
             var interval;
@@ -53,13 +299,12 @@
                     document.getElementsByClassName("st828")[silo].setAttribute("style", "stroke: red;");
                 } else {
                     document.getElementsByClassName("st828")[silo].setAttribute("style", "stroke: green;");
-                }                
+                }
                 document.getElementsByClassName("textE")[silo].setAttribute("height", value * 4);
                 var value = Math.round(value * 100 / mass);
                 document.getElementsByClassName("st7 st1179 st1181")[silo + 1].childNodes[0].nodeValue = value + "%";
                 document.getElementsByClassName("st1188")[silo].setAttribute("height", value * 4);
                 document.getElementsByClassName("st1188")[silo].setAttribute("y", 228 + (400 - value * 4));
-                console.log(silo);
             };
             function changeAll(height) {
                 height = height * 4;
@@ -75,5 +320,14 @@
         window.svg = svg;
         svg.reset();
         svg.Get();
+
+
+
+
+
     </script>
 }
+
+
+
+

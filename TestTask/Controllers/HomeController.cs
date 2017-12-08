@@ -10,6 +10,11 @@ namespace TestTask.Controllers
     {
         public ActionResult Index()
         {
+            using (var db = new DBEntities())
+            {
+                ViewBag.Positions = db.Positions.ToList().Select(z => new SelectListItem() { Text = z.Position, Value = z.id.ToString() });
+                ViewBag.Departmentments = db.Departments.ToList().Select(z => new SelectListItem() { Text = z.Department, Value = z.id.ToString() });
+            }
             return View();
         }
     }
